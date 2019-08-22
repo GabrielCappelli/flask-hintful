@@ -36,15 +36,20 @@ class BlueprintWrapper():
 
     Args:
         app (FlaskHintful): FlaskHintful api to register the Blueprints routes on
+        url_prefix (str, optional): [description]. Defaults to ''.
     '''
 
-    def __init__(self, app):
+    def __init__(self, app, url_prefix: str = ''):
         self.app = app
+        self.url_prefix = url_prefix
 
     def add_url_rule(self, rule, endpoint, view_func, **options):
         '''Wraps view_func with view_func_wrapper, then return a lambda expression as is
         expected by Flask Blueprint`s deferred_functions.
         '''
         wrapped_view_func = view_func_wrapper(view_func, self.app.serializer, self.app.deserializer)
-        self.app.openapi_provider.add_openapi_path(rule, options.get('methods', ['GET']), view_func)
+        if self.url_prefix:
+            prefixed_rule = '/'.join((self.url_prefix.rstrip('/'), rule.lstrip('/')))
+        self.app.openapi_provider.add_openapi_path(
+            rule or prefixed_rule, options.get('methods', ['GET']), view_func)
         return lambda s: s.add_url_rule(rule, endpoint, wrapped_view_func, **options)

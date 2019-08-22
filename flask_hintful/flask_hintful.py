@@ -67,7 +67,7 @@ class FlaskHintful():
         Args:
             blueprint (Blueprint): Flask Blueprint
         '''
-        bp_wrapper = BlueprintWrapper(self)
+        bp_wrapper = BlueprintWrapper(self, blueprint.url_prefix)
         for i, func in enumerate(blueprint.deferred_functions):
             blueprint.deferred_functions[i] = func(bp_wrapper)
         self.flask_app.register_blueprint(blueprint)
