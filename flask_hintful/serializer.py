@@ -44,16 +44,16 @@ class Serializer():
         '''
         self.serializers[type_] = serializer_func
 
-    def serialize_response(self, data: T) -> Union[tuple, Response]:
+    def serialize_response(self, data: T) -> Union[str, tuple, Response]:
         '''Serializes `data` into a response Flask understands.
         If Content-Type was supplied pass the same ahead to Flask, otherwise
         uses 'application/json' as the default Content-Type
 
         Args:
-            data (T): [description]
+            data (T): data to be serialized, a tuple return like Flask`s or a Flask Response object.
 
         Returns:
-            Union[tuple, Response]: Serialized response in a way Flask understands
+            Union[str, tuple, Response]: Serialized response in a way Flask understands
         '''
         if isinstance(data, tuple):
             headers: Dict[str, str] = {}
