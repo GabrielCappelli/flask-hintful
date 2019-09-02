@@ -74,9 +74,6 @@ class Serializer():
             return self.serialize(body), headers
 
         if isinstance(data, Response):
-            data.data = self.serialize(data.get_data(as_text=True))
-            if data.headers is None or data.headers.get('Content-Type') is None:
-                data.headers['Content-Type'] = 'application/json'
             return data
         return self.serialize(data), {'Content-Type': 'application/json'}
 

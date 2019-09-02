@@ -1,4 +1,4 @@
-from flask import Response, jsonify
+from flask import jsonify
 
 
 def test_response_class(api):
