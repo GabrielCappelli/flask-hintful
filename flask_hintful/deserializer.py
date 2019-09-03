@@ -11,7 +11,7 @@ class Deserializer():
     '''Provides deserialization for Flask Hintful.
 
     Default deserializers:
-        dict: flask.json.load,
+        dict: flask.json.loads,
         str: str,
         int: int,
         float: float,
@@ -24,7 +24,7 @@ class Deserializer():
 
     def __init__(self):
         self.deserializers: Dict[Type, Callable] = {
-            dict: json.load,
+            dict: json.loads,
             str: str,
             int: int,
             float: float,
@@ -45,7 +45,7 @@ class Deserializer():
         '''
         self.deserializers[type_] = deserializer_func
 
-    def deserialize_args(self, args, body, params) -> dict:
+    def deserialize_args(self, args, params, body=None) -> dict:
         '''Deserializes all args and body by finding the expected type's from params.
         Args that are found in params are ignored, unless params contains a VAR_KEYWORD
         param (e.g, **kwargs).

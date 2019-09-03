@@ -24,7 +24,7 @@ def view_func_wrapper(view_func: Callable, serializer: Serializer, deserializer:
         args = request.args.copy()
         args.update(request.view_args)
         deserialized_args = deserializer.deserialize_args(
-            args, request.get_json(), func_sig['params']
+            args, func_sig['params'], request.get_json()
         )
         response = view_func(**deserialized_args)
         return serializer.serialize_response(response)

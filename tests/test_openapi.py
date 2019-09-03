@@ -1,8 +1,4 @@
-from .test_dataclass import DataclassModel
-from .test_marshmallow import MarshmallowModel
-
-
-def test_openapi_json(api):
+def test_openapi_json(api, marshmallow_type, dataclass_type):
     '''Should return openapi json
     '''
     @api.route('/empty_route')
@@ -14,11 +10,11 @@ def test_openapi_json(api):
         pass
 
     @api.route('/marshmallow_test', methods=['POST'])
-    def marshmallow_route(model: MarshmallowModel) -> MarshmallowModel:
+    def marshmallow_route(model: marshmallow_type) -> marshmallow_type:
         pass
 
     @api.route('/dataclass_test', methods=['POST'])
-    def dataclass_route(model: DataclassModel) -> DataclassModel:
+    def dataclass_route(model: dataclass_type) -> dataclass_type:
         pass
 
     with api.flask_app.test_client() as client:
