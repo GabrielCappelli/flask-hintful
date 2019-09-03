@@ -24,6 +24,19 @@ def test_serialize():
     ) == '2019-07-06T05:04:03-01:00'
 
 
+def test_serialize_list(dataclass_type, marshmallow_type, model_dict):
+    '''Should be able to serialize a dataclass
+    '''
+    serializer = Serializer()
+    expected_list = '[1, 1.0, true, {"foo": "bar"}, {"bool_field": true, "date_field": "2019-09-08", "datetime_field": "2019-07-06T05:04:03-01:00", "float_field": 1.5, "int_field": 1, "list_field": ["1", "2", "str"], "nested_field": {"str_field": "nested_str"}, "str_field": "test_string"}, {"bool_field": true, "date_field": "2019-09-08", "datetime_field": "2019-07-06T06:04:03+00:00", "float_field": 1.5, "int_field": 1, "list_field": ["1", "2", "str"], "nested_field": {"str_field": "nested_str"}, "str_field": "test_string"}]'
+    deserialized_list = serializer.serialize(
+        [1, 1.0, True, {'foo': 'bar'},
+         dataclass_type(**model_dict),
+         marshmallow_type.__marshmallow__().load(model_dict).data]
+    )
+    assert expected_list == deserialized_list
+
+
 def test_serialize_dataclass(dataclass_type, model_dict):
     '''Should be able to serialize a dataclass
     '''

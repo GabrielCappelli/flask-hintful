@@ -14,7 +14,6 @@ class Serializer():
         int: str,
         float: str,
         bool: str,
-        list: str,
         date: lambda d: d.isoformat(),
         datetime: lambda d: d.isoformat(),
 
@@ -28,7 +27,6 @@ class Serializer():
             int: str,
             float: str,
             bool: str,
-            list: str,
             date: lambda d: d.isoformat(),
             datetime: lambda d: d.isoformat(),
         }
@@ -96,6 +94,8 @@ class Serializer():
         serializer = self.serializers.get(data.__class__)
         if serializer is not None:
             return serializer(data)
+        if self.is_list(data):
+            return self.serialize_list(data)
         if self.is_dataclass(data):
             return self.serialize_dataclass(data)
         if self.is_marshmallow_model(data):
@@ -129,6 +129,10 @@ class Serializer():
         return self.serializers.get(dict, json.dumps)(asdict(data))
 
     @staticmethod
+    def serialize_dataclass_to_dict(data: T) -> dict:
+        return asdict(data)
+
+    @staticmethod
     def is_marshmallow_model(data: T) -> bool:
         '''Determines if data is a marshmallow object by checking if it has a marshmallow
         schema in __marshmallow__ attribute
@@ -155,6 +159,49 @@ class Serializer():
             str: string representation of data
         '''
         return data.__marshmallow__().dumps(data).data
+
+    @staticmethod
+    def serialize_marshmallow_model_to_dict(data: T) -> dict:
+        '''Uses marshmallow.Schema.dumps to serialize `data`. Assumes that
+        data makes it's schema available in __marshmallow__ attrbute
+
+        Args:
+            data (T): A marshmallow model
+
+        Returns:
+            str: string representation of data
+        '''
+        return data.__marshmallow__().dump(data).data
+
+    @staticmethod
+    def is_list(data: T) -> bool:
+        '''Determines if data is a list or not
+
+        Args:
+            data (T): Any python object
+
+        Returns:
+            bool: True if data is a list , False otherwise
+        '''
+        if isinstance(data, list):
+            return True
+        return False
+
+    def serialize_list(self, data: T) -> str:
+        '''Serializes list and as items of this list
+
+        Args:
+            data (T): A python list
+
+        Returns:
+            str: Serialized list with serialized items
+        '''
+        for i, item in enumerate(data):
+            if self.is_dataclass(item):
+                data[i] = self.serialize_dataclass_to_dict(item)
+            elif self.is_marshmallow_model(item):
+                data[i] = self.serialize_marshmallow_model_to_dict(item)
+        return json.dumps(data, default=isodate_json_encoder)
 
 
 def isodate_json_encoder(data):
