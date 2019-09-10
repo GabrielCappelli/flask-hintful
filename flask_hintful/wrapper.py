@@ -48,8 +48,9 @@ class BlueprintWrapper():
         expected by Flask Blueprint`s deferred_functions.
         '''
         wrapped_view_func = view_func_wrapper(view_func, self.app.serializer, self.app.deserializer)
+        prefixed_rule = ''
         if self.url_prefix:
             prefixed_rule = '/'.join((self.url_prefix.rstrip('/'), rule.lstrip('/')))
         self.app.openapi_provider.add_openapi_path(
-            rule or prefixed_rule, options.get('methods', ['GET']), view_func)
+            prefixed_rule or rule, options.get('methods', ['GET']), view_func)
         return lambda s: s.add_url_rule(rule, endpoint, wrapped_view_func, **options)
