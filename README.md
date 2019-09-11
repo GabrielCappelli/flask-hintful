@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/GabrielCappelli/flask-hintful.svg?branch=master)](https://travis-ci.org/GabrielCappelli/flask-hintful)
+[![codecov](https://codecov.io/gh/GabrielCappelli/flask-hintful/branch/master/graph/badge.svg)](https://codecov.io/gh/GabrielCappelli/flask-hintful)
 # Flask-Hintful
 Flask-Hintful helps you write Restful APIs using Flask by taking advantage of Python's type hints.
 
