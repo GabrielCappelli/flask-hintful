@@ -26,6 +26,6 @@ setup(
     ],
     packages=["flask_hintful"],
     include_package_data=True,
-    install_requires=['flask', 'openapi-specgen'],
+    install_requires=['flask', 'openapi-specgen', 'marshmallow<3'],
     entry_points={}
 )
