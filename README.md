@@ -1,23 +1,24 @@
 [![Build Status](https://travis-ci.org/GabrielCappelli/flask-hintful.svg?branch=master)](https://travis-ci.org/GabrielCappelli/flask-hintful)
 [![codecov](https://codecov.io/gh/GabrielCappelli/flask-hintful/branch/master/graph/badge.svg)](https://codecov.io/gh/GabrielCappelli/flask-hintful)
+[![Documentation Status](https://readthedocs.org/projects/flask-hintful/badge/?version=latest)](https://flask-hintful.readthedocs.io/en/latest/?badge=latest)
 # Flask-Hintful
 Flask-Hintful helps you write Restful APIs using Flask by taking advantage of Python's type hints.
 
 Includes support for serializing/deserializing parameters according to type hints and automatically generating OpenApi documentation for your registered routes.
 
-# Requirements
+## Requirements
 
 * Python 3.7+
 * Flask
-* Marshmallow
+* Marshmallow < 3
 
-# Installation
+## Installation
 
 Install using pip
 
 ```pip install flask-hintful```
 
-# Quick Start
+## Quick Start
 
 Construct a FlaskHintful object by passing the Flask application as a parameter, then use the FlaskHintful object `@route` and `.register_blueprint` to register routes.
 
@@ -65,7 +66,10 @@ You will be able to access the generated OpenApi on `/swagger`.
 
 ![Preview1](./docs/images/sample_openapi.png)
 
+## Documentation
 
-# License
+https://flask-hintful.readthedocs.io/
+
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
