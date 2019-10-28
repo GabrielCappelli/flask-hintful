@@ -69,5 +69,6 @@ class FlaskHintful():
         '''
         bp_wrapper = BlueprintWrapper(self, blueprint.url_prefix)
         for i, func in enumerate(blueprint.deferred_functions):
-            blueprint.deferred_functions[i] = func(bp_wrapper)
+            if func.__qualname__ == 'Blueprint.add_url_rule.<locals>.<lambda>':
+                blueprint.deferred_functions[i] = func(bp_wrapper)
         self.flask_app.register_blueprint(blueprint)
