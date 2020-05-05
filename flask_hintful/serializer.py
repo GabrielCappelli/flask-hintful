@@ -158,7 +158,7 @@ class Serializer():
         Returns:
             str: string representation of data
         '''
-        return data.__marshmallow__().dumps(data).data
+        return data.__marshmallow__(strict=True).dumps(data).data
 
     @staticmethod
     def serialize_marshmallow_model_to_dict(data: T) -> dict:
@@ -171,7 +171,7 @@ class Serializer():
         Returns:
             str: string representation of data
         '''
-        return data.__marshmallow__().dump(data).data
+        return data.__marshmallow__(strict=True).dump(data).data
 
     @staticmethod
     def is_list(data: T) -> bool:
