@@ -2,6 +2,7 @@ dist: xenial
 language: python
 python:
   - "3.7"
+  - "3.8"
 env:
   - FLASK=1.0.2
   - FLASK=1.1.1
