@@ -4,11 +4,10 @@ from unittest.mock import Mock
 
 import pytest
 from dateutil.tz import tzoffset
-from werkzeug.datastructures import MultiDict
-
 from flask_hintful.deserializer import (FALSE_STRS, TRUE_STRS, Deserializer,
                                         str_to_bool)
 from flask_hintful.utils import get_func_sig
+from werkzeug.datastructures import MultiDict
 
 from .conftest import NestedModel
 
@@ -43,7 +42,7 @@ def test_deserialize_marshmallow_dict(marshmallow_type, model_dict):
     '''Should be able to deserialize a dict to marshmallow
     '''
     deserializer = Deserializer()
-    marshmallow_obj = marshmallow_type.__marshmallow__().load(model_dict).data
+    marshmallow_obj = marshmallow_type.__marshmallow__().load(model_dict)
     deserialized_marshmallow = deserializer.deserialize(model_dict, marshmallow_type)
     assert marshmallow_obj == deserialized_marshmallow
 
@@ -52,7 +51,7 @@ def test_deserialize_marshmallow_str(marshmallow_type, model_dict):
     '''Should be able to deserialize a str to marshmallow
     '''
     deserializer = Deserializer()
-    marshmallow_obj = marshmallow_type.__marshmallow__().load(model_dict).data
+    marshmallow_obj = marshmallow_type.__marshmallow__().load(model_dict)
     deserialized_marshmallow = deserializer.deserialize(json.dumps(model_dict), marshmallow_type)
     assert marshmallow_obj == deserialized_marshmallow
 
@@ -84,7 +83,7 @@ def test_deserialize_args(marshmallow_type, model_dict):
     args = MultiDict([('foo', 'bar')])
     deserialized_args = deserializer.deserialize_args(args, func_sig['params'], model_dict)
     assert deserialized_args['foo'] == 'bar'
-    assert deserialized_args['body'] == marshmallow_type.__marshmallow__().load(model_dict).data
+    assert deserialized_args['body'] == marshmallow_type.__marshmallow__().load(model_dict)
 
 
 def test_str_to_bool():

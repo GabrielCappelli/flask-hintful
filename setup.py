@@ -11,7 +11,7 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="flask-hintful",
-    version="0.0.6",
+    version="0.0.7",
     description="Flask extension for generating restful apis using type hints to automatically (de)serialize parameters and generate openapi docs.",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -28,8 +28,8 @@ setup(
     include_package_data=True,
     install_requires=[
         'flask>=1.0.2',
-        'openapi-specgen',
-        'marshmallow<3'
+        'openapi-specgen>=0.0.6',
+        'marshmallow>=3.0.0'
     ],
     entry_points={}
 )

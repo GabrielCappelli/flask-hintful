@@ -96,3 +96,15 @@ def test_openapi_request_body(marshmallow_type, dataclass_type):
     assert openapi.openapi_paths[1].method == 'post'
     assert openapi.openapi_paths[1].responses[0].data_type == dataclass_type
     assert openapi.openapi_paths[1].request_body == dataclass_type
+
+
+def test_openapi_security():
+    '''OpenApi provider should succesfully register basic, bearer and apikey authetncation types
+    '''
+    openapi = OpenApiProvider()
+    app = Flask(__name__)
+    api = FlaskHintful(app, openapi_provider=openapi, openapi_security=('basic', 'bearer', 'apikey'))
+
+    assert openapi.openapi_security.basic_auth is not None
+    assert openapi.openapi_security.bearer_auth is not None
+    assert openapi.openapi_security.api_key_auth is not None

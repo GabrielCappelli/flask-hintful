@@ -21,13 +21,15 @@ class FlaskHintful():
         serializer (Serializer, optional): Serialization provider. Defaults to Serializer().
         deserializer (Deserializer, optional): Deserialization provider. Defaults to Deserializer().
         openapi_provider (OpenApiProvider, optional): OpenApiProvider. Defaults to OpenApiProvider().
+        openapi_security: (List[str], optional). Items in List must be in (Basic, Bearer, ApiKey).
     '''
 
     def __init__(self,
                  flask_app: Flask,
                  serializer=None,
                  deserializer=None,
-                 openapi_provider=None
+                 openapi_provider=None,
+                 openapi_security=None
                  ):
         self.flask_app = flask_app
         self.serializer = serializer or Serializer()
@@ -41,6 +43,8 @@ class FlaskHintful():
             flask_app.config.get('FLASK_HINTFUL_OPENAPI_UI_URL', '/swagger'),
             view_func=self.openapi_provider.get_openapi_ui
         )
+        if openapi_security:
+            self.openapi_provider.add_security(openapi_security)
 
     def route(self, rule: str, **options):
         '''Wrap the decorated function using view_func_wrapper then register the wrapped func

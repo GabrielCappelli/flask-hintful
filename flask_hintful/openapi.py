@@ -3,8 +3,10 @@ from dataclasses import is_dataclass
 from typing import Callable, List
 
 from flask import Response, current_app, jsonify
-from openapi_specgen import OpenApi, OpenApiParam, OpenApiPath, OpenApiResponse
-
+from openapi_specgen import (OpenApi,
+                             OpenApiParam, OpenApiPath, OpenApiResponse,
+                             OpenApiSecurity)
+from openapi_specgen.security import ApiKeyAuth, BasicAuth, BearerAuth
 from .utils import get_func_sig
 
 
@@ -14,6 +16,20 @@ class OpenApiProvider():
 
     def __init__(self):
         self.openapi_paths: List[OpenApiPath] = []
+        self.openapi_security: OpenApiSecurity = OpenApiSecurity()
+
+    def add_security(self, auth_list: List[str]):
+        '''Adds authentication types to OpenApiSecurity at root level
+
+        Args:
+            auth_list: (List[str]). Items in List must be in (Basic, Bearer, ApiKey).
+        '''
+        if any(auth.lower() == 'basic' for auth in auth_list):
+            self.openapi_security.basic_auth = BasicAuth()
+        if any(auth.lower() == 'bearer' for auth in auth_list):
+            self.openapi_security.bearer_auth = BearerAuth()
+        if any(auth.lower() == 'apikey' for auth in auth_list):
+            self.openapi_security.api_key_auth = ApiKeyAuth()
 
     def add_openapi_path(self, rule: str, methods: List[str], view_func: Callable):
         '''Add a new OpenApi Path for each method. Inspects view_func's type hints to be able to determine
@@ -79,7 +95,9 @@ class OpenApiProvider():
         Returns:
             Response: A Flask response containing the OpenApi spec as json
         '''
-        return jsonify(OpenApi(current_app.name, self.openapi_paths).as_dict())
+        return jsonify(
+            OpenApi(current_app.name, self.openapi_paths, security=self.openapi_security).as_dict()
+        )
 
     @staticmethod
     def get_openapi_ui() -> str:

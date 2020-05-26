@@ -167,8 +167,8 @@ class Deserializer():
             str: string representation of data
         '''
         if isinstance(data, str):
-            return type_.__marshmallow__(strict=True).loads(data).data
-        return type_.__marshmallow__(strict=True).load(data).data
+            return type_.__marshmallow__().loads(data)
+        return type_.__marshmallow__().load(data)
 
 
 def str_to_bool(data: str) -> bool:

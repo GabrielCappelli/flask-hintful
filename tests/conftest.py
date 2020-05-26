@@ -4,9 +4,8 @@ from datetime import date, datetime
 
 import pytest
 from flask import Flask
-from marshmallow import Schema, fields, post_load
-
 from flask_hintful import FlaskHintful
+from marshmallow import Schema, fields, post_load
 
 
 @pytest.fixture
@@ -108,7 +107,7 @@ class MarshmallowModelSchema(Schema):
     bool_field = fields.Bool()
     list_field = fields.List(fields.Str())
     date_field = fields.Date()
-    datetime_field = fields.DateTime()
+    datetime_field = fields.AwareDateTime()
     nested_field = fields.Nested('NestedModelSchema')
 
     @post_load
