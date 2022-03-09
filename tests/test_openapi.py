@@ -1,6 +1,6 @@
 from flask import Blueprint, Flask
 from flask_hintful import FlaskHintful
-from flask_hintful.openapi import OpenApiProvider
+from flask_hintful.openapi import OpenApiProvider, OpenApiParam
 
 
 def test_openapi_json(api):
@@ -43,6 +43,27 @@ def test_openapi_blueprint():
 
     assert openapi.openapi_paths[0].path == '/bp_route/{id}'
     assert openapi.openapi_paths[0].method == 'get'
+
+
+def test_openapi_header_parameter():
+    '''Should successfully register header parameter and path args
+    '''
+    openapi = OpenApiProvider()
+    app = Flask(__name__)
+    api = FlaskHintful(app, openapi_provider=openapi)
+
+    @api.route('/route')
+    def api_route(application_id: OpenApiParam = OpenApiParam(name='application_id', location='header', data_type=str)) -> str:
+        pass
+
+    assert openapi.openapi_paths[0].path == '/route'
+    assert openapi.openapi_paths[0].method == 'get'
+    assert openapi.openapi_paths[0].responses[0].data_type == str
+
+    assert openapi.openapi_paths[0].params[0].name == 'application_id'
+    assert openapi.openapi_paths[0].params[0].data_type == str
+    assert openapi.openapi_paths[0].params[0].location == 'header'
+    assert openapi.openapi_paths[0].params[0].required
 
 
 def test_openapi_args():

@@ -47,6 +47,10 @@ class OpenApiProvider():
         for param_name, param in func_sig['params'].items():
             if hasattr(param.annotation, '__marshmallow__'):
                 body = param.annotation.__marshmallow__
+            elif param.annotation == OpenApiParam:
+                openapi_params.append(
+                    param.default
+                )
             elif is_dataclass(param.annotation):
                 body = param.annotation
             elif f'<{param_name}>' in re.findall('<.*?>', rule):
