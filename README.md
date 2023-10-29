@@ -1,3 +1,9 @@
+## not mainained anymore
+
+This was a fun experiment, but I no longer use this code. I'd recommend using FastAPI instead.
+
+
+
 [![Build Status](https://travis-ci.org/GabrielCappelli/flask-hintful.svg?branch=master)](https://travis-ci.org/GabrielCappelli/flask-hintful)
 [![codecov](https://codecov.io/gh/GabrielCappelli/flask-hintful/branch/master/graph/badge.svg)](https://codecov.io/gh/GabrielCappelli/flask-hintful)
 [![Documentation Status](https://readthedocs.org/projects/flask-hintful/badge/?version=latest)](https://flask-hintful.readthedocs.io/en/latest/?badge=latest)
